@@ -5,6 +5,5 @@
 # Power BI
 *.pbix.backup
 # Large files
-data/*.csv
 # MySQL
 *.sql.bak
