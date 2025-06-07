@@ -1,0 +1,10 @@
+# General
+*.DS_Store
+*.bak
+*.tmp
+# Power BI
+*.pbix.backup
+# Large files
+data/*.csv
+# MySQL
+*.sql.bak
