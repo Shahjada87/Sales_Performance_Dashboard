@@ -20,3 +20,18 @@ create table if not exists sales_performance_dashboard(
     Profit DECIMAL(10,2)
 );
 
+
+
+-- this enables the LOCAL INFILE feature in MySQL, 
+--which allows the server to read data files from the local file system.
+Set global local_infile = 1;
+
+
+-- now lets add data from local to the table that I just now created using the 
+--load data query
+LOAD DATA LOCAL INFILE 
+'/Users/shahjadaemirsaqualain/Downloads/SampleSuperstore.csv' 
+INTO TABLE sales_performance_dashboard
+
+
+
