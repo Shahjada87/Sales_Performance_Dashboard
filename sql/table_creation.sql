@@ -64,12 +64,134 @@ mysql> select * from sales_performance_dashboard;
 | Second Class   | Consumer    | United States | Henderson         | Kentucky             | 42420       | South   | Furniture       | Bookcases    |   261.96 |        2 |     0.00 |    41.91 |
 | Second Class   | Consumer    | United States | Henderson         | Kentucky             | 42420       | South   | Furniture       | Chairs       |   731.94 |        3 |     0.00 |   219.58 |
 | Second Class   | Corporate   | United States | Los Angeles       | California           | 90036       | West    | Office Supplies | Labels       |    14.62 |        2 |     0.00 |     6.87 |
-| Standard Class | Consumer    | United States | Fort Lauderdale   | Florida              | 33311       | South   | Furniture       | Tables       |   957.58 |        5 |     0.45 |  -383.03 |
-| Standard Class | Consumer    | United States | Fort Lauderdale   | Florida              | 33311       | South   | Office Supplies | Storage      |    22.37 |        2 |     0.20 |     2.52 |
-| Standard Class | Consumer    | United States | Los Angeles       | California           | 90032       | West    | Furniture       | Furnishings  |    48.86 |        7 |     0.00 |    14.17 |
-| Standard Class | Consumer    | United States | Los Angeles       | California           | 90032       | West    | Office Supplies | Art          |     7.28 |        4 |     0.00 |     1.97 |
-| Standard Class | Consumer    | United States | Los Angeles       | California           | 90032       | West    | Technology      | Phones       |   907.15 |        6 |     0.20 |    90.72 |
-| Standard Class | Consumer    | United States | Los Angeles       | California           | 90032       | West    | Office Supplies | Binders      |    18.50 |        3 |     0.20 |     5.78 |
-| Standard Class | Consumer    | United States | Los Angeles       | California           | 90032       | West    | Office Supplies | Appliances   |   114.90 |        5 |     0.00 |    34.47 |
+
+
+
+
+
+-------Now lets clean the data--------
+
+
+-- 1. lets check if the table has the complete dataset loaded to it
+
+mysql> select count(*) from sales_performance_dashboard ;
++----------+
+| count(*) |
++----------+
+|     9993 |
++----------+
+
+-- it gave me a total 9993 rows of data has been loaded to the table because 
+-- as this dataset contained 1st as headers so it was ignored in the load data command
+
+
+
+-- 2. lets check the first 10 rows to confirm data integrity meaning if all the correct datas have been loaded
+
+mysql> select * from sales_performance_dashboard limit 10;
++----------------+-----------+---------------+-----------------+------------+-------------+--------+-----------------+--------------+--------+----------+----------+---------+
+| Ship Mode      | Segment   | Country       | City            | State      | Postal Code | Region | Category        | Sub-Category | Sales  | Quantity | Discount | Profit  |
++----------------+-----------+---------------+-----------------+------------+-------------+--------+-----------------+--------------+--------+----------+----------+---------+
+| Second Class   | Consumer  | United States | Henderson       | Kentucky   | 42420       | South  | Furniture       | Bookcases    | 261.96 |        2 |     0.00 |   41.91 |
+| Second Class   | Consumer  | United States | Henderson       | Kentucky   | 42420       | South  | Furniture       | Chairs       | 731.94 |        3 |     0.00 |  219.58 |
+| Second Class   | Corporate | United States | Los Angeles     | California | 90036       | West   | Office Supplies | Labels       |  14.62 |        2 |     0.00 |    6.87 |
+| Standard Class | Consumer  | United States | Fort Lauderdale | Florida    | 33311       | South  | Furniture       | Tables       | 957.58 |        5 |     0.45 | -383.03 |
+| Standard Class | Consumer  | United States | Fort Lauderdale | Florida    | 33311       | South  | Office Supplies | Storage      |  22.37 |        2 |     0.20 |    2.52 |
+| Standard Class | Consumer  | United States | Los Angeles     | California | 90032       | West   | Furniture       | Furnishings  |  48.86 |        7 |     0.00 |   14.17 |
+| Standard Class | Consumer  | United States | Los Angeles     | California | 90032       | West   | Office Supplies | Art          |   7.28 |        4 |     0.00 |    1.97 |
+| Standard Class | Consumer  | United States | Los Angeles     | California | 90032       | West   | Technology      | Phones       | 907.15 |        6 |     0.20 |   90.72 |
+| Standard Class | Consumer  | United States | Los Angeles     | California | 90032       | West   | Office Supplies | Binders      |  18.50 |        3 |     0.20 |    5.78 |
+| Standard Class | Consumer  | United States | Los Angeles     | California | 90032       | West   | Office Supplies | Appliances   | 114.90 |        5 |     0.00 |   34.47 |
++----------------+-----------+---------------+-----------------+------------+-------------+--------+-----------------+--------------+--------+----------+----------+---------+
+
+
+
+-- after comaparing this with the original data in excel I found all the data that
+-- is loaded here are completely correct
+
+Ship Mode	    Segment	        Country	       City	        State    Postal Code	Region	Category	    Sub-Category	Sales	Quantity	Discount	Profit
+Second Class	Consumer	United States	Henderson	    Kentucky	42420	    South	Furniture	    Bookcases	    261.96	    2	        0	    41.9136
+Second Class	Consumer	United States	Henderson	    Kentucky	42420	    South	Furniture	    Chairs	        731.94	    3	        0	    219.582
+Second Class	Corporate	United States	Los Angeles	    California	90036	    West	Office Supplies	Labels	        14.62	    2	        0	    6.8714
+Standard Class	Consumer	United States	Fort Lauderdale	Florida	    33311	    South	Furniture	    Tables	        957.5775	5	        0.45	-383.031
+Standard Class	Consumer	United States	Fort Lauderdale	Florida	    33311	    South	Office Supplies	Storage	        22.368	    2	        0.2	    2.5164
+Standard Class	Consumer	United States	Los Angeles	    California	90032	    West	Furniture	    Furnishings	    48.86	    7	        0	    14.1694
+Standard Class	Consumer	United States	Los Angeles	    California	90032	    West	Office Supplies	Art	            7.28	    4	        0	    1.9656
+Standard Class	Consumer	United States	Los Angeles	    California	90032	    West	Technology	    Phones	        907.152	    6	        0.2	    90.7152
+Standard Class	Consumer	United States	Los Angeles	    California	90032	    West	Office Supplies	Binders	        18.504	    3	        0.2	    5.7825
+Standard Class	Consumer	United States	Los Angeles	    California	90032	    West	Office Supplies	Appliances	    114.9	    5	        0	    34.47
+
+-- the above mentioned is the acrtual dataset.
+
+-- this means load data local infile worked as expected to work
+
+
+-- now lets check the data if there are any null values in the whole dataset
+
+1.
+
+SELECT 
+COUNT(*) AS total_rows,
+SUM(CASE WHEN `Ship Mode` IS NULL THEN 1 ELSE 0 END) AS null_ship_mode
+FROM sales_performance_dashboard;
+
++------------+----------------+
+| total_rows | null_ship_mode |
++------------+----------------+
+|       9993 |              0 |
++------------+----------------+
+
+-- here i have checked if any rows contained any null values in ship mode column
+-- if there were any this would have checked and gave me sum of all the null vlaues
+
+
+2.
+
+select 
+count(*) as total_rows,
+sum(case when 'Segment' IS Not NULL then 1 else 0 end) as No_null_segment
+from sales_performance_dashboard;
+
+
++------------+-----------------+
+| total_rows | No_null_segment |
++------------+-----------------+
+|       9993 |            9993 |
++------------+-----------------+
+
+
+-- here i have twicked a little if there are none null values then it will sum all the rows and
+-- if there were any this would have checked and discarded that row from the sum
+
+3.
+
+-- likewise lets check all the other columns in one go 
+
+
+select 
+count(*) as total_rows,
+sum(case when 'Country' IS NULL then 1 else 0 end) as null_country,
+sum(case when 'City' IS NULL then 1 else 0 end) as null_city,
+sum(case when 'State' IS NULL then 1 else 0 end) as null_State,
+sum(case when 'Postal Code' IS NULL then 1 else 0 end) as null_postal_code,
+sum(case when 'City' IS NULL then 1 else 0 end) as null_city,
+sum(case when 'Region' IS NULL then 1 else 0 end) as null_region,
+sum(case when 'Category' IS NULL then 1 else 0 end) as null_category,
+sum(case when 'Sub Category' IS NULL then 1 else 0 end) as null_sub_category,
+sum(case when 'Sales' IS NULL then 1 else 0 end) as null_sales,
+sum(case when 'Quantity' IS NULL then 1 else 0 end) as null_quantity,
+sum(case when 'Discount' IS NULL then 1 else 0 end) as null_discount,
+sum(case when 'Profit' IS NULL then 1 else 0 end) as null_profit
+from sales_performance_dashboard;
+
+
++------------+--------------+-----------+------------+------------------+-----------+-------------+---------------+-------------------+------------+---------------+---------------+-------------+
+| total_rows | null_country | null_city | null_State | null_postal_code | null_city | null_region | null_category | null_sub_category | null_sales | null_quantity | null_discount | null_profit |
++------------+--------------+-----------+------------+------------------+-----------+-------------+---------------+-------------------+------------+---------------+---------------+-------------+
+|       9993 |            0 |         0 |          0 |                0 |         0 |           0 |             0 |                 0 |          0 |             0 |             0 |           0 |
++------------+--------------+-----------+------------+------------------+-----------+-------------+---------------+-------------------+------------+---------------+---------------+-------------+
+
+
+-- there are none null values present in the data loaded to the table
 
 
