@@ -195,3 +195,71 @@ from sales_performance_dashboard;
 -- there are none null values present in the data loaded to the table
 
 
+-- now lets check if there any negative values 
+
+select * from sales_performance_dashboard
+where profit < 0 
+limit 5;
+
++----------------+-------------+---------------+-----------------+--------------+-------------+---------+-----------------+--------------+---------+----------+----------+----------+
+| Ship Mode      | Segment     | Country       | City            | State        | Postal Code | Region  | Category        | Sub-Category | Sales   | Quantity | Discount | Profit   |
++----------------+-------------+---------------+-----------------+--------------+-------------+---------+-----------------+--------------+---------+----------+----------+----------+
+| Standard Class | Consumer    | United States | Fort Lauderdale | Florida      | 33311       | South   | Furniture       | Tables       |  957.58 |        5 |     0.45 |  -383.03 |
+| Standard Class | Home Office | United States | Fort Worth      | Texas        | 76106       | Central | Office Supplies | Appliances   |   68.81 |        5 |     0.80 |  -123.86 |
+| Standard Class | Home Office | United States | Fort Worth      | Texas        | 76106       | Central | Office Supplies | Binders      |    2.54 |        3 |     0.80 |    -3.82 |
+| Second Class   | Consumer    | United States | Philadelphia    | Pennsylvania | 19140       | East    | Furniture       | Chairs       |   71.37 |        2 |     0.30 |    -1.02 |
+| Standard Class | Consumer    | United States | Philadelphia    | Pennsylvania | 19140       | East    | Furniture       | Bookcases    | 3083.43 |        7 |     0.50 | -1665.05 |
++----------------+-------------+---------------+-----------------+--------------+-------------+---------+-----------------+--------------+---------+----------+----------+----------+
+5 rows in set (0.04 sec)
+
+
+
+-- as we can see there are negative values present in the data set
+-- lets handle these as well now
+
+--Adding an is_loss flag will allow to easily filter or analyze these loss-making 
+--entries without repeatedly querying WHERE Profit < 0
+
+ALTER TABLE sales_performance_dashboard 
+ADD COLUMN is_loss BOOLEAN DEFAULT FALSE;
+
+
+UPDATE sales_performance_dashboard 
+SET is_loss = TRUE WHERE Profit < 0;
+
+
+SELECT * 
+FROM sales_performance_dashboard 
+WHERE is_loss = TRUE LIMIT 5;
+
+
++----------------+-------------+---------------+-----------------+--------------+-------------+---------+-----------------+--------------+---------+----------+----------+----------+---------+
+| Ship Mode      | Segment     | Country       | City            | State        | Postal Code | Region  | Category        | Sub-Category | Sales   | Quantity | Discount | Profit   | is_loss |
++----------------+-------------+---------------+-----------------+--------------+-------------+---------+-----------------+--------------+---------+----------+----------+----------+---------+
+| Standard Class | Consumer    | United States | Fort Lauderdale | Florida      | 33311       | South   | Furniture       | Tables       |  957.58 |        5 |     0.45 |  -383.03 |       1 |
+| Standard Class | Home Office | United States | Fort Worth      | Texas        | 76106       | Central | Office Supplies | Appliances   |   68.81 |        5 |     0.80 |  -123.86 |       1 |
+| Standard Class | Home Office | United States | Fort Worth      | Texas        | 76106       | Central | Office Supplies | Binders      |    2.54 |        3 |     0.80 |    -3.82 |       1 |
+| Second Class   | Consumer    | United States | Philadelphia    | Pennsylvania | 19140       | East    | Furniture       | Chairs       |   71.37 |        2 |     0.30 |    -1.02 |       1 |
+| Standard Class | Consumer    | United States | Philadelphia    | Pennsylvania | 19140       | East    | Furniture       | Bookcases    | 3083.43 |        7 |     0.50 | -1665.05 |       1 |
+
+
+
+-- here we can see there a total of 1871 loss making rows
+
+SELECT COUNT(*) AS loss_rows 
+FROM sales_performance_dashboard 
+WHERE is_loss = TRUE;
+
++-----------+
+| loss_rows |
++-----------+
+|      1871 |
++-----------+
+
+
+
+
+
+
+
+
