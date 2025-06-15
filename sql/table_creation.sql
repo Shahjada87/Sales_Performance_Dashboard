@@ -257,9 +257,43 @@ WHERE is_loss = TRUE;
 +-----------+
 
 
+-- now lets remove all the duplicate entries in the data set
+
+-- query to make a table with no duplicate entries 
+
+create table cleaned_sales_performance_dashboard
+AS select distinct * from sales_performance_dashboard;
 
 
+select count(*) from cleaned_sales_performance_dashboard;
++----------+
+| count(*) |
++----------+
+|     9976 |
++----------+
 
+-- now lets drop the old table which contains the duplicate entries 
+
+drop table
+sales_performance_dashboard;
+
+
+-- now lets rename the cleaned table to original name 
+
+alter table cleaned_sales_performance_dashboard
+rename to sales_performance_dashboard;
+
+
+-- the new table contains 9976 rows of data
+-- cleaning the data will help to have the bnest data quality, missing values will
+-- change the analysis and duplicate might also chaneg the analysis.
+
+select count(*) from sales_performance_dashboard;
++----------+
+| count(*) |
++----------+
+|     9976 |
++----------+
 
 
 
