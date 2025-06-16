@@ -296,4 +296,44 @@ select count(*) from sales_performance_dashboard;
 +----------+
 
 
+-- as the data cleaning part is done now lets check if the data is good for dashboarding 
 
+1. Total sales based of region
+
+Select region, sum(sales) as total_sales
+from sales_performance_dashboard
+group by region
+order by total_sales desc;
+
+
++---------+-------------+
+| region  | total_sales |
++---------+-------------+
+| West    |   725012.58 |
+| East    |   678435.32 |
+| Central |   500782.85 |
+| South   |   391721.90 |
++---------+-------------+
+4 rows in set (0.02 sec)
+
+
+--so we got the best performing region based on the sum of total sales in the region
+--this will help us get the best pie chart.
+
+
+2. Profit based of category
+
+select category, Round(sum(profit),2)as profit_by_category
+from sales_performance_dashboard
+group by category
+order by profit_by_category desc
+
++-----------------+--------------------+
+| category        | profit_by_category |
++-----------------+--------------------+
+| Technology      |          145455.66 |
+| Office Supplies |          122291.80 |
+| Furniture       |           18421.79 |
++-----------------+--------------------+
+
+-- this will also help in getting the best chart for the profit by category
