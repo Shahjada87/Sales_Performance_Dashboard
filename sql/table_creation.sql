@@ -1,3 +1,4 @@
+-- Active: 1739013567819@@127.0.0.1@3306@superstore_project
 
 create database superstore_project;
 
@@ -337,3 +338,11 @@ order by profit_by_category desc
 +-----------------+--------------------+
 
 -- this will also help in getting the best chart for the profit by category
+
+
+3. Sales by segment
+
+select Segment, Sum(sales) as total_sales_by_segment  
+FROM sales_performance_dashboard
+group by segment 
+ORDER BY total_sales_by_segment desc
