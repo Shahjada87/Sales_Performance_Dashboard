@@ -346,3 +346,56 @@ select Segment, Sum(sales) as total_sales_by_segment
 FROM sales_performance_dashboard
 group by segment 
 ORDER BY total_sales_by_segment desc
+
+
++-------------+------------------------+
+| Segment     | total_sales_by_segment |
++-------------+------------------------+
+| Consumer    |             1160589.61 |
+| Corporate   |              706070.21 |
+| Home Office |              429292.83 |
++-------------+------------------------+
+
+4. Top 10 cities by sales 
+
+
+select city, sum(sales) as total_sales_by_cities
+from sales_performance_dashboard
+GROUP BY city
+ORDER BY total_sales_by_cities desc
+limit 10;
+
+
++---------------+-----------------------+
+| city          | total_sales_by_cities |
++---------------+-----------------------+
+| New York City |             256319.00 |
+| Los Angeles   |             175831.89 |
+| Seattle       |             119460.28 |
+| San Francisco |             112577.17 |
+| Philadelphia  |             109061.54 |
+| Houston       |              64441.21 |
+| Chicago       |              48536.03 |
+| San Diego     |              47521.05 |
+| Jacksonville  |              44713.18 |
+| Springfield   |              43054.35 |
++---------------+-----------------------+
+10 rows in set (0.02 sec)
+
+-- there are more combinations for eda(exploratory data analysis) but 
+-- lets export the cleaned data to the local storage for analysis using power bi.
+
+
+SELECT * FROM sales_performance_dashboard
+INTO OUTFILE 
+'/Users/abdurrehman/Downloads/Cleaned_SampleSuperstore_Export.csv'
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+
+-- I am stuck at this point. I am getting an 
+-- error number 1290 which is 
+--"The MySQL server is running with the --secure-file-priv option so it cannot execute this statement"
+-- while trying to export the cleaned data set to my local computer.
+
+-- very soon I will try and resolve this issue.
+
