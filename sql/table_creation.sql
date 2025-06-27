@@ -388,7 +388,7 @@ limit 10;
 
 SELECT * FROM sales_performance_dashboard
 INTO OUTFILE 
-'/Users/abdurrehman/Downloads/Cleaned_SampleSuperstore_Export.csv'
+'/Users/shahjadaemirsaqualain/Downloads/Cleaned_SampleSuperstore_Export.csv'
 FIELDS TERMINATED BY ',' ENCLOSED BY '"'
 LINES TERMINATED BY '\n';
 
@@ -399,3 +399,6 @@ LINES TERMINATED BY '\n';
 
 -- very soon I will try and resolve this issue.
 
+
+
+-- As its not working, now I am goiing to solve this using pyhton using pandas 
