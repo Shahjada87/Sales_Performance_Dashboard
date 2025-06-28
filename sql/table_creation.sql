@@ -386,6 +386,38 @@ limit 10;
 10 rows in set (0.02 sec)
 
 
+5. Profit by category and sub category
+
+
+select  category,Sub_Category, Round(sum(profit),2)as profit_by_category
+from sales_performance_dashboard
+group by category, Sub_Category
+order by profit_by_category;
+
+
++-----------------+--------------+--------------------+
+| category        | Sub_Category | profit_by_category |
++-----------------+--------------+--------------------+
+| Furniture       | Tables       |          -17725.59 |
+| Furniture       | Bookcases    |           -3472.56 |
+| Office Supplies | Supplies     |           -1188.99 |
+| Office Supplies | Fasteners    |             949.53 |
+| Technology      | Machines     |            3384.73 |
+| Office Supplies | Labels       |            5526.31 |
+| Office Supplies | Art          |            6524.78 |
+| Office Supplies | Envelopes    |            6964.10 |
+| Furniture       | Furnishings  |           13052.83 |
+| Office Supplies | Appliances   |           18065.12 |
+| Office Supplies | Storage      |           21279.05 |
+| Furniture       | Chairs       |           26567.11 |
+| Office Supplies | Binders      |           30227.88 |
+| Office Supplies | Paper        |           33944.02 |
+| Technology      | Accessories  |           41936.78 |
+| Technology      | Phones       |           44516.25 |
+| Technology      | Copiers      |           55617.90 |
++-----------------+--------------+--------------------+
+17 rows in set (0.08 sec)
+
 
 
 
