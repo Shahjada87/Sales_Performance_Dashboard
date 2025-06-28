@@ -324,10 +324,10 @@ order by total_sales desc;
 
 2. Profit based of category
 
-select category, Round(sum(profit),2)as profit_by_category
+select  category, Round(sum(profit),2)as profit_by_category
 from sales_performance_dashboard
 group by category
-order by profit_by_category desc
+order by profit_by_category desc; asc
 
 +-----------------+--------------------+
 | category        | profit_by_category |
@@ -336,6 +336,9 @@ order by profit_by_category desc
 | Office Supplies |          122291.80 |
 | Furniture       |           18421.79 |
 +-----------------+--------------------+
+3 rows in set (0.02 sec)
+
+
 
 -- this will also help in getting the best chart for the profit by category
 
@@ -382,6 +385,10 @@ limit 10;
 +---------------+-----------------------+
 10 rows in set (0.02 sec)
 
+
+
+
+
 -- there are more combinations for eda(exploratory data analysis) but 
 -- lets export the cleaned data to the local storage for analysis using power bi.
 
@@ -402,3 +409,22 @@ LINES TERMINATED BY '\n';
 
 
 -- As its not working, now I am goiing to solve this using pyhton using pandas 
+
+
+-- now I realised I have made a mistake while making the table.  I am going to chnage the name 
+-- column from Sub-Category to sub_category
+
+ALTER TABLE sales_performance_dashboard 
+CHANGE COLUMN `Sub-Category` Sub_Category VARCHAR(50);
+
+
+mysql> SELECT * FROM sales_performance_dashboard
+    -> ;
++----------------+-------------+---------------+-------------------+----------------------+-------------+---------+-----------------+--------------+----------+----------+----------+----------+---------+
+| Ship Mode      | Segment     | Country       | City              | State                | Postal Code | Region  | Category        | Sub_Category | Sales    | Quantity | Discount | Profit   | is_loss |
++----------------+-------------+---------------+-------------------+----------------------+-------------+---------+-----------------+--------------+----------+----------+----------+----------+---------+
+| Second Class   | Consumer    | United States | Henderson         | Kentucky             | 42420       | South   | Furniture       | Bookcases    |   261.96 |        2 |     0.00 |    41.91 |       0 |
+| Second Class   | Consumer    | United States | Henderson         | Kentucky             | 42420       | South   | Furniture       | Chairs       |   731.94 |        3 |     0.00 |   219.58 |       0 |
+| Second Class   | Corporate   | United States | Los Angeles       | California           | 90036       | West    | Office Supplies | Labels       |    14.62 |        2 |     0.00 |     6.87 |       0 |
+| Standard Class | Consumer    | United States | Fort Lauderdale   | Florida              | 33311       | South   | Furniture       | Tables       |   957.58 |        5 |     0.45 |  -383.03 |       1 |
+| Standard Class | Consumer    | United States | Fort Lauderdale   | Florida              | 33311       | South   | Office Supplies | Storage      |    22.37 |        2 |     0.20 |     2.52 |       0 |

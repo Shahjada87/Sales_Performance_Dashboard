@@ -45,3 +45,15 @@ finally:
         conn.close()
 
 ## Now i successfully completed saving the cleaned data set to my local computer using the pandas 
+
+
+
+#now lwts move on to the dasboading and I will be using the power bi tool for this task.
+
+
+
+
+
+
+
+
