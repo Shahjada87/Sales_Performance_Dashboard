@@ -460,3 +460,144 @@ mysql> SELECT * FROM sales_performance_dashboard
 | Second Class   | Corporate   | United States | Los Angeles       | California           | 90036       | West    | Office Supplies | Labels       |    14.62 |        2 |     0.00 |     6.87 |       0 |
 | Standard Class | Consumer    | United States | Fort Lauderdale   | Florida              | 33311       | South   | Furniture       | Tables       |   957.58 |        5 |     0.45 |  -383.03 |       1 |
 | Standard Class | Consumer    | United States | Fort Lauderdale   | Florida              | 33311       | South   | Office Supplies | Storage      |    22.37 |        2 |     0.20 |     2.52 |       0 |
+
+
+-- now lets check some more edas
+
+-- 6. Total profit per state
+
+
+SELECT State, SUM(Profit) AS total_profit
+FROM sales_performance_dashboard
+GROUP BY State
+ORDER BY total_profit DESC;
+
+
+Output 
+
++----------------------+--------------+
+| State                | total_profit |
++----------------------+--------------+
+| California           |     76258.05 |
+| New York             |     74015.55 |
+| Washington           |     33368.29 |
+| Michigan             |     24428.05 |
+| Virginia             |     18598.00 |
+| Indiana              |     18382.97 |
+| Georgia              |     16250.08 |
+| Kentucky             |     11199.70 |
+| Minnesota            |     10823.22 |
+| Delaware             |      9977.37 |
+| New Jersey           |      9772.91 |
+| Wisconsin            |      8401.78 |
+| Rhode Island         |      7285.64 |
+| Maryland             |      7031.20 |
+| Massachusetts        |      6785.55 |
+| Missouri             |      6436.19 |
+| Alabama              |      5786.85 |
+| Oklahoma             |      4853.98 |
+| Arkansas             |      4008.65 |
+| Connecticut          |      3511.44 |
+| Nevada               |      3316.76 |
+| Mississippi          |      3172.98 |
+| Utah                 |      2546.56 |
+| Vermont              |      2244.98 |
+| Louisiana            |      2196.09 |
+| Nebraska             |      2037.10 |
+| Montana              |      1833.32 |
+| South Carolina       |      1769.08 |
+| New Hampshire        |      1706.50 |
+| Iowa                 |      1183.81 |
+| New Mexico           |      1157.13 |
+| District of Columbia |      1059.59 |
+| Kansas               |       836.45 |
+| Idaho                |       826.73 |
+| Maine                |       454.50 |
+| South Dakota         |       394.84 |
+| North Dakota         |       230.14 |
+| West Virginia        |       185.93 |
+| Wyoming              |       100.20 |
+| Oregon               |     -1194.11 |
+| Florida              |     -3399.25 |
+| Arizona              |     -3427.87 |
+| Tennessee            |     -5341.66 |
+| Colorado             |     -6527.86 |
+| North Carolina       |     -7490.81 |
+| Illinois             |    -12601.65 |
+| Pennsylvania         |    -15565.48 |
+| Ohio                 |    -16959.31 |
+| Texas                |    -25750.91 |
++----------------------+--------------+
+49 rows in set (0.06 sec)
+
+
+
+
+--7.  Total quantity sold per region
+
+
+SELECT Region, SUM(Quantity) AS total_quantity
+FROM sales_performance_dashboard
+GROUP BY Region
+ORDER BY total_quantity DESC;
+
+Output
+
++---------+----------------+
+| Region  | total_quantity |
++---------+----------------+
+| West    |          12232 |
+| East    |          10609 |
+| Central |           8768 |
+| South   |           6209 |
++---------+----------------+
+4 rows in set (0.02 sec)
+
+
+--8. Total quantity sold per product category
+
+
+SELECT Category, SUM(Quantity) AS total_quantity
+FROM sales_performance_dashboard
+GROUP BY Category
+ORDER BY total_quantity DESC;
+
+
+Output
+
++-----------------+----------------+
+| Category        | total_quantity |
++-----------------+----------------+
+| Office Supplies |          22859 |
+| Furniture       |           8020 |
+| Technology      |           6939 |
++-----------------+----------------+
+3 rows in set (0.02 sec)
+
+
+
+
+--9.  Average quantity sold per customer segment
+SELECT Segment, AVG(Quantity) AS avg_quantity
+FROM sales_performance_dashboard
+GROUP BY Segment
+ORDER BY avg_quantity DESC;
+
+
+Output 
+
+
++-------------+--------------+
+| Segment     | avg_quantity |
++-------------+--------------+
+| Corporate   |       3.8444 |
+| Home Office |       3.7841 |
+| Consumer    |       3.7621 |
++-------------+--------------+
+3 rows in set (0.01 sec)
+
+
+
+
+
+
