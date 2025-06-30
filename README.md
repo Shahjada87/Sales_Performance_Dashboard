@@ -1,6 +1,6 @@
-<h1>Sales Performance Dashboard Project</h1>
+<h1 align = center >Sales Performance Dashboard Project</h1>
 
-Project Overview
+<h3>Project Overview</h3>
 
 This project focuses on analyzing sales performance data from a Superstore dataset to derive actionable business insights. The dataset, stored in a MySQL database, was cleaned, processed, and analyzed using SQL for data preparation and Pandas for data export. A comprehensive dashboard was built using Power BI to visualize key performance metrics, enabling stakeholders to make data-driven decisions.
 The primary goal was to create an interactive dashboard that highlights sales, profit, and quantity metrics across various dimensions such as regions, categories, segments, and cities. The project demonstrates proficiency in SQL for data manipulation, Python (Pandas) for data export, and Power BI for data visualization.
