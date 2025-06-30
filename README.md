@@ -193,6 +193,14 @@ o	KPI card: Average quantity sold by segment.
 
 <h4>Dashboard Screenshots</h4>
 
+
+<img width="617" alt="Screenshot 2025-06-27 at 12 24 13 PM" src="https://github.com/user-attachments/assets/5a33c8ec-f23a-4dd2-b533-76aae3d46167" />
+
+
+<img width="1014" alt="Screenshot 2025-06-29 at 4 52 02 PM" src="https://github.com/user-attachments/assets/e63dafac-2ae4-4231-b0d5-67158e9e7d07" />
+
+
+
 ---
 
 
