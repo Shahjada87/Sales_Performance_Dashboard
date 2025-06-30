@@ -13,27 +13,44 @@ The project demonstrates proficiency in SQL for data manipulation, Python (Panda
 <h4>Objectives</h4>
 
 •	Data Cleaning: Ensure high-quality data by handling duplicates, null values, and negative profit entries.
+
 •	Exploratory Data Analysis (EDA): Perform SQL-based analysis to uncover trends and patterns in sales, profit, and quantity metrics.
+
 •	Data Export: Export cleaned data from MySQL to a CSV file using Python (Pandas) for further analysis.
+
 •	Dashboard Creation: Build an interactive Power BI dashboard to visualize key metrics for stakeholders.
+
 •	Actionable Insights: Provide insights to optimize sales strategies, identify high-performing regions and categories, and flag loss-making transactions.
 
 
 <h4>Dataset</h4>
 
 The dataset, SampleSuperstore.csv, contains 9,994 rows (reduced to 9,976 after cleaning) and 13 columns:
+
 •	Ship Mode: Shipping method (e.g., Second Class, Standard Class)
+
 •	Segment: Customer segment (e.g., Consumer, Corporate, Home Office)
+
 •	Country: Country of transaction (United States)
+
 •	City: City of transaction
+
 •	State: State of transaction
+
 •	Postal Code: Postal code of transaction
+
 •	Region: Region (e.g., West, East, Central, South)
+
 •	Category: Product category (e.g., Furniture, Office Supplies, Technology)
+
 •	Sub_Category: Product sub-category (e.g., Chairs, Tables, Phones)
+
 •	Sales: Sales amount (USD)
+
 •	Quantity: Number of items sold
+
 •	Discount: Discount applied
+
 •	Profit: Profit amount (USD)
 
 
