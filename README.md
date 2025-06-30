@@ -35,7 +35,11 @@ The dataset, SampleSuperstore.csv, contains 9,994 rows (reduced to 9,976 after c
 •	Quantity: Number of items sold
 •	Discount: Discount applied
 •	Profit: Profit amount (USD)
-Methodology
+
+
+<h4>Methodology</h4>
+
+
 1. Database Setup
 •	Created a MySQL database (superstore_project) and a table (sales_performance_dashboard) to store the dataset.
 •	Enabled MySQL's LOCAL INFILE feature to load data from the CSV file.
