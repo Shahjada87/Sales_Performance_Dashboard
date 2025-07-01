@@ -10,10 +10,10 @@ The primary goal was to create an interactive dashboard that highlights sales, p
 The project demonstrates proficiency in SQL for data manipulation, Python (Pandas) for data export, and Power BI for data visualization.
 
 
-<h4>Objectives</h4>
+<h3>Methodology</h3>
 
 
-1. Database Setup
+**1. Database Setup**
 
 Created a MySQL database (superstore_project) and a table (sales_performance_dashboard) to store the dataset.
 
@@ -25,7 +25,7 @@ Loaded the dataset using LOAD DATA LOCAL INFILE, skipping the header row and han
 
 
 
-2. Data Cleaning
+**2. Data Cleaning**
 
 Verified Data Integrity: Confirmed 9,993 rows loaded and checked the first 10 rows against the original CSV.
 
@@ -43,7 +43,7 @@ Column Renaming: Renamed Sub-Category to Sub_Category for consistency.
 
 
 
-3. Exploratory Data Analysis (EDA)
+**3. Exploratory Data Analysis (EDA)**
 
 
 Performed SQL queries to extract insights:
@@ -77,7 +77,7 @@ Average Quantity Sold by Segment: Corporate (3.84 units), Home Office (3.78 unit
 
 
 
-4. Data Export
+**4. Data Export**
 
 Attempted MySQL INTO OUTFILE but faced --secure-file-priv error.
 
@@ -86,7 +86,7 @@ Used Python (Pandas, mysql.connector) to export the cleaned data to Cleaned_Samp
 
 
 
-5. Power BI Dashboard
+**5. Power BI Dashboard**
 
 Imported the cleaned CSV into Power BI.
 
@@ -98,7 +98,7 @@ Added interactive filters for region, category, and segment.
 
 
 
-Key Performance Indicators (KPIs)
+<h3>Key Performance Indicators (KPIs)</h3>
 
 The following KPIs were defined to monitor sales performance and visualized in the Power BI dashboard:
 
@@ -106,7 +106,7 @@ The following KPIs were defined to monitor sales performance and visualized in t
 
 
 
-Total Sales:
+**Total Sales:**
 
 
 
@@ -124,7 +124,7 @@ Visualization: KPI card.
 
 
 
-Total Profit:
+**Total Profit:**
 
 
 
@@ -142,7 +142,7 @@ Visualization: KPI card, bar charts by category/state.
 
 
 
-Average Sales per Transaction:
+**Average Sales per Transaction:**
 
 
 
@@ -160,7 +160,7 @@ Visualization: KPI card.
 
 
 
-Average Quantity Sold per Transaction:
+**Average Quantity Sold per Transaction:**
 
 
 
@@ -178,7 +178,7 @@ Visualization: KPI card, bar chart by segment.
 
 
 
-Profit Margin:
+**Profit Margin:**
 
 
 
@@ -196,7 +196,7 @@ Visualization: KPI card or gauge.
 
 
 
-Loss-Making Transactions:
+**Loss-Making Transactions:**
 
 
 
@@ -214,7 +214,7 @@ Visualization: KPI card or filtered table.
 
 
 
-Top-Performing Region by Sales:
+**Top-Performing Region by Sales:**
 
 
 
@@ -232,7 +232,7 @@ Visualization: Pie chart or map.
 
 
 
-Top-Performing Category by Profit:
+**Top-Performing Category by Profit:**
 
 
 
