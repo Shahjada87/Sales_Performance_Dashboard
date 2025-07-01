@@ -191,6 +191,8 @@ o	KPI card: Average quantity sold by segment.
 
 •	Ensured clear labels, consistent formatting, and a professional layout.
 
+---
+
 <h4>Dashboard Screenshots</h4>
 
 
@@ -199,6 +201,8 @@ o	KPI card: Average quantity sold by segment.
 
 <img width="1014" alt="Screenshot 2025-06-29 at 4 52 02 PM" src="https://github.com/user-attachments/assets/e63dafac-2ae4-4231-b0d5-67158e9e7d07" />
 
+
+<img width="1285" alt="Screenshot 2025-07-01 at 4 04 44 PM" src="https://github.com/user-attachments/assets/f20ef273-e198-4e73-bd50-c4535a97aecd" />
 
 
 ---
