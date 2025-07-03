@@ -10,193 +10,250 @@ The primary goal was to create an interactive dashboard that highlights sales, p
 The project demonstrates proficiency in SQL for data manipulation, Python (Pandas) for data export, and Power BI for data visualization.
 
 
-<h4>Objectives</h4>
+<h3>Methodology</h3>
 
-•	Data Cleaning: Ensure high-quality data by handling duplicates, null values, and negative profit entries.
 
-•	Exploratory Data Analysis (EDA): Perform SQL-based analysis to uncover trends and patterns in sales, profit, and quantity metrics.
+**1. Database Setup**
 
-•	Data Export: Export cleaned data from MySQL to a CSV file using Python (Pandas) for further analysis.
+Created a MySQL database (superstore_project) and a table (sales_performance_dashboard) to store the dataset.
 
-•	Dashboard Creation: Build an interactive Power BI dashboard to visualize key metrics for stakeholders.
 
-•	Actionable Insights: Provide insights to optimize sales strategies, identify high-performing regions and categories, and flag loss-making transactions.
+Enabled MySQL's LOCAL INFILE feature to load data from the CSV file.
 
 
-<h4>Dataset</h4>
+Loaded the dataset using LOAD DATA LOCAL INFILE, skipping the header row and handling CSV formatting.
 
-The dataset, SampleSuperstore.csv, contains 9,994 rows (reduced to 9,976 after cleaning) and 13 columns:
 
-•	Ship Mode: Shipping method (e.g., Second Class, Standard Class)
 
-•	Segment: Customer segment (e.g., Consumer, Corporate, Home Office)
+**2. Data Cleaning**
 
-•	Country: Country of transaction (United States)
+Verified Data Integrity: Confirmed 9,993 rows loaded and checked the first 10 rows against the original CSV.
 
-•	City: City of transaction
 
-•	State: State of transaction
+Null Value Check: Confirmed no null values in any column.
 
-•	Postal Code: Postal code of transaction
 
-•	Region: Region (e.g., West, East, Central, South)
+Negative Profit Handling: Identified 1,871 rows with negative profit, added an is_loss BOOLEAN column, and flagged these entries.
 
-•	Category: Product category (e.g., Furniture, Office Supplies, Technology)
 
-•	Sub_Category: Product sub-category (e.g., Chairs, Tables, Phones)
+Duplicate Removal: Created a new table with distinct rows (9,976 rows), dropped the original table, and renamed the cleaned table.
 
-•	Sales: Sales amount (USD)
 
-•	Quantity: Number of items sold
+Column Renaming: Renamed Sub-Category to Sub_Category for consistency.
 
-•	Discount: Discount applied
 
-•	Profit: Profit amount (USD)
 
+**3. Exploratory Data Analysis (EDA)**
 
-<h4>Methodology</h4>
 
+Performed SQL queries to extract insights:
 
-<h5>1. Database Setup</h5>
 
-•	Created a MySQL database (superstore_project) and a table (sales_performance_dashboard) to store the dataset.
+Total Sales by Region: West ($725,012.58), East ($678,435.32), Central ($500,782.85), South ($391,721.90).
 
-•	Enabled MySQL's LOCAL INFILE feature to load data from the CSV file.
 
-•	Loaded the dataset into the table using the LOAD DATA LOCAL INFILE command, skipping the header row and handling CSV-specific formatting (e.g., fields terminated by commas, enclosed by quotes).
+Profit by Category: Technology ($145,455.66), Office Supplies ($122,291.80), Furniture ($18,421.79).
 
-<h5>2. Data Cleaning</h5>
 
-•	Verified Data Integrity: Confirmed 9,993 rows were loaded (excluding the header) and checked the first 10 rows against the original CSV to ensure accuracy.
+Sales by Segment: Consumer ($1,160,589.61), Corporate ($706,070.21), Home Office ($429,292.83).
 
-•	Null Value Check: Queried all columns to confirm no null values existed.
 
-•	Negative Profit Handling: Identified 1,871 rows with negative profit, added an is_loss BOOLEAN column to flag these entries, and updated the table accordingly.
+Top 10 Cities by Sales: New York City ($256,319.00), Los Angeles ($175,831.89), etc.
 
-•	Duplicate Removal: Created a new table (cleaned_sales_performance_dashboard) with distinct rows, reducing the row count to 9,976. Dropped the original table and renamed the cleaned table.
 
-•	Column Renaming: Renamed the Sub-Category column to Sub_Category for consistency.
+Profit by Category and Sub-Category: Identified loss-making sub-categories (e.g., Tables: -$17,725.59).
 
-•	Result: A clean dataset with 9,976 rows, no duplicates, no null values, and a new is_loss column for loss analysis.
 
-<h5>3. Exploratory Data Analysis (EDA)</h5>
+Total Profit by State: California ($76,258.05), New York ($74,015.55), etc.
 
-Performed SQL queries to extract insights for dashboarding:
 
-1.	Total Sales by Region:
+Total Quantity Sold by Region: West (12,232 units), East (10,609 units), etc.
 
-o	West: $725,012.58
 
-o	East: $678,435.32
+Total Quantity Sold by Category: Office Supplies (22,859 units), Furniture (8,020 units), Technology (6,939 units).
 
-o	Central: $500,782.85
 
-o	South: $391,721.90
+Average Quantity Sold by Segment: Corporate (3.84 units), Home Office (3.78 units), Consumer (3.76 units).
 
-2.	Profit by Category:
 
-o	Technology: $145,455.66
 
-o	Office Supplies: $122,291.80
+**4. Data Export**
 
-o	Furniture: $18,421.79
+Attempted MySQL INTO OUTFILE but faced --secure-file-priv error.
 
-3.	Sales by Segment:
 
-o	Consumer: $1,160,589.61
+Used Python (Pandas, mysql.connector) to export the cleaned data to Cleaned_SampleSuperstore_Export.csv.
 
-o	Corporate: $706,070.21
 
-o	Home Office: $429,292.83
 
-4.	Top 10 Cities by Sales:
+**5. Power BI Dashboard**
 
-o	New York City: $256,319.00
+Imported the cleaned CSV into Power BI.
 
-o	Los Angeles: $175,831.89
 
-o	Seattle: $119,460.28
+Created visualizations based on EDA results, including pie charts, bar charts, and KPI cards.
 
-o	... (7 more cities)
 
-5.	Profit by Category and Sub-Category:
+Added interactive filters for region, category, and segment.
 
-o	Highlighted loss-making sub-categories (e.g., Tables: -$17,725.59, Bookcases: -$3,472.56).
 
-6.	Total Profit by State:
 
-o	California: $76,258.05
+<h3>Key Performance Indicators (KPIs)</h3>
 
-o	New York: $74,015.55
+The following KPIs were defined to monitor sales performance and visualized in the Power BI dashboard:
 
-o	... (47 more states, with some showing negative profits, e.g., Texas: -$25,750.91)
 
-7.	Total Quantity Sold by Region:
 
-o	West: 12,232 units
 
-o	East: 10,609 units
 
-o	Central: 8,768 units
+**Total Sales:**
 
-o	South: 6,209 units
 
-8.	Total Quantity Sold by Category:
 
-o	Office Supplies: 22,859 units
 
-o	Furniture: 8,020 units
 
-o	Technology: 6,939 units
+Sum of all sales revenue ($2,295,952.65).
 
-9.	Average Quantity Sold by Segment:
 
-o	Corporate: 3.84 units
 
-o	Home Office: 3.78 units
+Purpose: Measures overall revenue performance.
 
-o	Consumer: 3.76 units
 
-4. Data Export
 
-•	Attempted to export the cleaned dataset using MySQL's INTO OUTFILE command but encountered Error 1290 (--secure-file-priv restriction).
+Visualization: KPI card.
 
-•	Resolved by writing a Python script using Pandas and mysql.connector to fetch the data and export it to Cleaned_SampleSuperstore_Export.csv.
 
-5. Power BI Dashboard
 
-•	Imported the cleaned CSV into Power BI.
+**Total Profit:**
 
-•	Created visualizations based on EDA results, including:
 
-o	Pie chart: Total sales by region.
 
-o	Bar chart: Profit by category.
 
-o	Bar chart: Sales by segment.
 
-o	Table/Bar chart: Top 10 cities by sales.
+Sum of profit ($286,169.25).
 
-o	Stacked bar chart: Profit by category and sub-category.
 
-o	Bar chart: Total profit by state.
 
-o	Bar chart: Total quantity sold by region.
+Purpose: Evaluates profitability and identifies loss-making transactions.
 
-o	Bar chart: Total quantity sold by category.
 
-o	KPI card: Average quantity sold by segment.
 
-•	Added filters for interactive exploration (e.g., by region, category, or segment).
+Visualization: KPI card, bar charts by category/state.
 
-•	Ensured clear labels, consistent formatting, and a professional layout.
+
+
+**Average Sales per Transaction:**
+
+
+
+
+
+Average sales value (~$230.20).
+
+
+
+Purpose: Assesses transaction size.
+
+
+
+Visualization: KPI card.
+
+
+
+**Average Quantity Sold per Transaction:**
+
+
+
+
+
+Average items sold per transaction (~3.79 units).
+
+
+
+Purpose: Measures sales volume efficiency.
+
+
+
+Visualization: KPI card, bar chart by segment.
+
+
+
+**Profit Margin:**
+
+
+
+
+
+Ratio of profit to sales (~12.46%).
+
+
+
+Purpose: Evaluates profitability efficiency.
+
+
+
+Visualization: KPI card or gauge.
+
+
+
+**Loss-Making Transactions:**
+
+
+
+
+
+Count of transactions with negative profit (1,871).
+
+
+
+Purpose: Identifies unprofitable sales.
+
+
+
+Visualization: KPI card or filtered table.
+
+
+
+**Top-Performing Region by Sales:**
+
+
+
+
+
+Region with highest sales (West: $725,012.58).
+
+
+
+Purpose: Identifies lucrative markets.
+
+
+
+Visualization: Pie chart or map.
+
+
+
+**Top-Performing Category by Profit:**
+
+
+
+
+
+Category with highest profit (Technology: $145,455.66).
+
+
+
+Purpose: Identifies profitable product lines.
+
+
+
+Visualization: Bar chart or treemap.
 
 ---
 
 <h4>Dashboard Screenshots</h4>
 
 
-<img width="617" alt="Screenshot 2025-06-27 at 12 24 13 PM" src="https://github.com/user-attachments/assets/5a33c8ec-f23a-4dd2-b533-76aae3d46167" />
+<img align = center width="617" alt="Screenshot 2025-06-27 at 12 24 13 PM" src="https://github.com/user-attachments/assets/5a33c8ec-f23a-4dd2-b533-76aae3d46167" />
 
 
 <img width="1014" alt="Screenshot 2025-06-29 at 4 52 02 PM" src="https://github.com/user-attachments/assets/e63dafac-2ae4-4231-b0d5-67158e9e7d07" />
