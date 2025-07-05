@@ -140,6 +140,16 @@ GROUP BY Sub_Category, Discount;
 
 
 
++--------------+----------+-------------------+-----------+------------+--------------+
+| Sub_Category | Discount | transaction_count | avg_sales | avg_profit | total_profit |
++--------------+----------+-------------------+-----------+------------+--------------+
+| Bookcases    |     0.50 |                18 |    406.03 |    -236.44 |     -4255.83 |
++--------------+----------+-------------------+-----------+------------+--------------+
+1 row in set (0.04 sec)
+
+
+
+
 -- now lets decrease the discount for sub category TABLE and check if we can make profit here 
 
 WITH Adjusted_Discount AS (
@@ -167,3 +177,9 @@ FROM Adjusted_Discount
 GROUP BY Sub_Category, original_discount, new_discount;
 
 
++--------------+-------------------+--------------+-------------------+-----------+---------------------+----------------+------------------+
+| Sub_Category | original_discount | new_discount | transaction_count | avg_sales | original_avg_profit | new_avg_profit | total_new_profit |
++--------------+-------------------+--------------+-------------------+-----------+---------------------+----------------+------------------+
+| Bookcases    |              0.50 |         0.10 |                18 |    406.03 |             -236.44 |         -74.02 |         -1332.44 |
++--------------+-------------------+--------------+-------------------+-----------+---------------------+----------------+------------------+
+1 row in set (0.02 sec)
