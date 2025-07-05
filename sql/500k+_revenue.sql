@@ -69,5 +69,101 @@ ORDER BY Sub_Category, Discount DESC;
 12 rows in set (0.02 sec)
 
 
--- now lets check if we can increase the profit by reducing the profit
+-- now lets check if we can increase the profit by reducing the discount
+
+
+
+-- lets check all gthe sub categories first then lets look for distinct sub categories
+
+select distinct sub_category, avg(sales) as Avg_sales, round(avg(profit),2) as Avg_Profit
+from sales_performance_dashboard
+where is_loss = 1
+group by Sub_Category;
+
+
++--------------+-------------+------------+
+| sub_category | Avg_sales   | Avg_Profit |
++--------------+-------------+------------+
+| Tables       |  517.136355 |    -159.67 |
+| Appliances   |   50.484776 |    -128.80 |
+| Binders      |   59.047614 |     -62.92 |
+| Chairs       |  391.910769 |     -42.17 |
+| Bookcases    |  441.034404 |    -111.49 |
+| Furnishings  |   76.921018 |     -38.87 |
+| Storage      |  235.211491 |     -39.91 |
+| Accessories  |  120.426813 |     -10.23 |
+| Phones       |  263.219485 |     -55.37 |
+| Machines     | 1646.733864 |    -684.52 |
+| Supplies     |  426.278182 |     -91.38 |
+| Fasteners    |   12.438333 |      -2.77 |
++--------------+-------------+------------+
+12 rows in set (0.05 sec)
+
+
+--a. lets analyze current loss making transactions for tables 
+
+
+SELECT 
+    Sub_Category,
+    Discount,
+    COUNT(*) AS transaction_count,
+    ROUND(AVG(Sales), 2) AS avg_sales,
+    ROUND(AVG(Profit), 2) AS avg_profit,
+    ROUND(SUM(Profit), 2) AS total_profit
+FROM sales_performance_dashboard
+WHERE Sub_Category = 'Tables' AND Discount = 0.45 AND is_loss = TRUE
+GROUP BY Sub_Category, Discount;
+
+
++--------------+----------+-------------------+-----------+------------+--------------+
+| Sub_Category | Discount | transaction_count | avg_sales | avg_profit | total_profit |
++--------------+----------+-------------------+-----------+------------+--------------+
+| Tables       |     0.45 |                11 |    498.63 |    -226.65 |     -2493.12 |
++--------------+----------+-------------------+-----------+------------+--------------+
+1 row in set (0.06 sec)
+
+
+
+-- lets decrease discount and check some other sub categories also using same concept 
+
+
+SELECT 
+    Sub_Category,
+    Discount,
+    COUNT(*) AS transaction_count,
+    ROUND(AVG(Sales), 2) AS avg_sales,
+    ROUND(AVG(Profit), 2) AS avg_profit,
+    ROUND(SUM(Profit), 2) AS total_profit
+FROM sales_performance_dashboard
+WHERE Sub_Category = 'Bookcases' AND discount = 0.50 AND is_loss = 1
+GROUP BY Sub_Category, Discount;
+
+
+
+-- now lets decrease the discount for sub category TABLE and check if we can make profit here 
+
+WITH Adjusted_Discount AS (
+    SELECT 
+        Sub_Category,
+        Discount AS original_discount,
+        0.10 AS new_discount,
+        Sales,
+        Profit,
+        (Sales * (1 - 0.50)) AS implied_revenue_before_cost,
+        (Sales * (1 - 0.10)) - ((Sales * (1 - 0.50)) - Profit) AS new_profit
+    FROM sales_performance_dashboard
+    WHERE Sub_Category = 'Bookcases' AND Discount = 0.50 AND is_loss = TRUE
+)
+SELECT 
+    Sub_Category,
+    original_discount,
+    new_discount,
+    COUNT(*) AS transaction_count,
+    ROUND(AVG(Sales), 2) AS avg_sales,
+    ROUND(AVG(Profit), 2) AS original_avg_profit,
+    ROUND(AVG(new_profit), 2) AS new_avg_profit,
+    ROUND(SUM(new_profit), 2) AS total_new_profit
+FROM Adjusted_Discount
+GROUP BY Sub_Category, original_discount, new_discount;
+
 
