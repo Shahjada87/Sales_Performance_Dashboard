@@ -183,3 +183,137 @@ GROUP BY Sub_Category, original_discount, new_discount;
 | Bookcases    |              0.50 |         0.10 |                18 |    406.03 |             -236.44 |         -74.02 |         -1332.44 |
 +--------------+-------------------+--------------+-------------------+-----------+---------------------+----------------+------------------+
 1 row in set (0.02 sec)
+
+
+
+-- as we can see even after giving less discounts in this sub category we are not able to make profit in this category
+-- som lets move on to some other sub category and check if they have more transaction count so that
+-- we can get convert loss to good profit 
+
+
+
+-- fist lets list all the sub categories with their transaction count and then take one sub category 
+-- which has most transaction count chekc if we can convert its loss to profit 
+
+
+select
+    sub_category,
+    discount,
+    count(*) as transaction_count,
+    Round(sum(profit),2) as total_profit
+from sales_performance_dashboard
+group by Sub_Category, discount;
+
+
++--------------+----------+-------------------+-------------+
+| sub_category | discount | transaction_count | total_sales |
++--------------+----------+-------------------+-------------+
+| Bookcases    |     0.00 |                60 |     6075.75 |
+| Chairs       |     0.00 |               132 |    21898.00 |
+| Labels       |     0.00 |               238 |     4402.17 |
+| Tables       |     0.45 |                11 |    -2493.12 |
+| Storage      |     0.20 |               316 |    -4249.36 |
+| Furnishings  |     0.00 |               570 |    16841.62 |
+| Art          |     0.00 |               497 |     5377.53 |
+| Phones       |     0.20 |               469 |    16536.84 |
+| Binders      |     0.20 |               573 |    29417.80 |
+| Appliances   |     0.00 |               270 |    23110.82 |
+| Tables       |     0.20 |                71 |     -303.58 |
+| Paper        |     0.20 |               509 |     8693.48 |
+| Appliances   |     0.80 |                67 |    -8629.67 |
+| Binders      |     0.80 |               232 |   -21903.22 |
+| Storage      |     0.00 |               530 |    25528.41 |
+| Chairs       |     0.30 |               157 |    -6725.13 |
+| Tables       |     0.00 |                72 |    13276.27 |
+| Accessories  |     0.00 |               471 |    35289.33 |
+| Bookcases    |     0.50 |                18 |    -4255.83 |
+| Binders      |     0.70 |               380 |   -16601.18 |
+| Furnishings  |     0.20 |               248 |     2155.85 |
+| Envelopes    |     0.20 |               102 |     1987.19 |
+| Art          |     0.20 |               298 |     1147.25 |
+| Furnishings  |     0.60 |               138 |    -5944.64 |
+| Bookcases    |     0.32 |                27 |    -2391.16 |
+| Binders      |     0.00 |               337 |    39314.48 |
+| Phones       |     0.00 |               311 |    34365.24 |
+| Fasteners    |     0.00 |               128 |      652.20 |
+| Paper        |     0.00 |               850 |    25250.54 |
+| Chairs       |     0.10 |                76 |     7111.03 |
+| Chairs       |     0.20 |               250 |     4283.21 |
+| Accessories  |     0.20 |               304 |     6647.45 |
+| Fasteners    |     0.20 |                89 |      297.33 |
+| Envelopes    |     0.00 |               152 |     4976.91 |
+| Tables       |     0.50 |                36 |    -8615.44 |
+| Phones       |     0.40 |               109 |    -6385.83 |
+| Supplies     |     0.00 |               117 |     1718.45 |
+| Appliances   |     0.20 |               112 |     2497.88 |
+| Machines     |     0.40 |                13 |    -2666.85 |
+| Labels       |     0.20 |               125 |     1124.14 |
+| Supplies     |     0.20 |                73 |    -2907.44 |
+| Bookcases    |     0.20 |                46 |      130.50 |
+| Machines     |     0.70 |                23 |   -19579.35 |
+| Machines     |     0.00 |                29 |    27137.84 |
+| Copiers      |     0.20 |                37 |    17878.73 |
+| Tables       |     0.30 |                54 |    -3402.32 |
+| Copiers      |     0.00 |                22 |    35556.17 |
+| Bookcases    |     0.15 |                52 |     1418.98 |
+| Machines     |     0.30 |                 5 |      326.04 |
+| Tables       |     0.40 |                75 |   -16187.40 |
+| Appliances   |     0.10 |                16 |     1086.09 |
+| Machines     |     0.50 |                12 |    -7635.24 |
+| Machines     |     0.10 |                 2 |      832.09 |
+| Machines     |     0.20 |                31 |     4970.20 |
+| Copiers      |     0.40 |                 9 |     2183.00 |
+| Bookcases    |     0.70 |                15 |    -3894.93 |
+| Bookcases    |     0.30 |                10 |     -555.87 |
++--------------+----------+-------------------+-------------+
+
+
+
+
+-- now lets filter this and keep only those profit which is less than 0 
+
+
+
+ select
+    sub_category,
+    discount,
+    count(*) as transaction_count,
+    Round(sum(profit),2) as total_profit
+from sales_performance_dashboard
+group by Sub_Category, discount
+having sum(profit) < 0
+order by total_profit asc;
+
+
++--------------+----------+-------------------+--------------+
+| sub_category | discount | transaction_count | total_profit |
++--------------+----------+-------------------+--------------+
+| Binders      |     0.80 |               232 |    -21903.22 |
+| Machines     |     0.70 |                23 |    -19579.35 |
+| Binders      |     0.70 |               380 |    -16601.18 |
+| Tables       |     0.40 |                75 |    -16187.40 |
+| Appliances   |     0.80 |                67 |     -8629.67 |
+| Tables       |     0.50 |                36 |     -8615.44 |
+| Machines     |     0.50 |                12 |     -7635.24 |
+| Chairs       |     0.30 |               157 |     -6725.13 |
+| Phones       |     0.40 |               109 |     -6385.83 |
+| Furnishings  |     0.60 |               138 |     -5944.64 |
+| Bookcases    |     0.50 |                18 |     -4255.83 |
+| Storage      |     0.20 |               316 |     -4249.36 |
+| Bookcases    |     0.70 |                15 |     -3894.93 |
+| Tables       |     0.30 |                54 |     -3402.32 |
+| Supplies     |     0.20 |                73 |     -2907.44 |
+| Machines     |     0.40 |                13 |     -2666.85 |
+| Tables       |     0.45 |                11 |     -2493.12 |
+| Bookcases    |     0.32 |                27 |     -2391.16 |
+| Bookcases    |     0.30 |                10 |      -555.87 |
+| Tables       |     0.20 |                71 |      -303.58 |
++--------------+----------+-------------------+--------------+
+
+
+
+
+
+
+
+
