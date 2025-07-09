@@ -313,7 +313,49 @@ order by total_profit asc;
 
 
 
+-- now lets try decreasing the discount given and see if we can get some profit in some sub categories
+-- where the loss is maximum
 
 
+WITH Adjusted_Discount AS (
+    SELECT 
+        Sub_Category,
+        Discount AS original_discount,
+        0.40 AS new_discount,
+        Sales,
+        Profit,
+        (Sales * (1 - 0.80)) AS implied_revenue_before_cost,
+        (Sales * (1 - 0.40)) - ((Sales * (1 - 0.80)) - Profit) AS new_profit
+    FROM sales_performance_dashboard
+    WHERE Sub_Category = 'Binders' AND Discount = 0.80 AND is_loss = TRUE
+)
+SELECT 
+    Sub_Category,
+    original_discount,
+    new_discount,
+    COUNT(*) AS transaction_count,
+    ROUND(SUM(Sales), 2) AS total_sales,
+    ROUND(SUM(Profit), 2) AS original_profit,
+    ROUND(AVG(new_profit), 2) AS new_avg_profit,
+    ROUND(SUM(new_profit), 2) AS total_new_profit,
+    ROUND(SUM(new_profit) - SUM(Profit), 2) AS difference_in_profit
+FROM Adjusted_Discount
+GROUP BY Sub_Category, original_discount, new_discount;
+
+
++--------------+-------------------+--------------+-------------------+-------------+-----------------+----------------+------------------+----------------------+
+| Sub_Category | original_discount | new_discount | transaction_count | total_sales | original_profit | new_avg_profit | total_new_profit | difference_in_profit |
++--------------+-------------------+--------------+-------------------+-------------+-----------------+----------------+------------------+----------------------+
+| Binders      |              0.80 |         0.40 |               232 |    13577.64 |       -21903.22 |         -71.00 |        -16472.16 |              5431.06 |
++--------------+-------------------+--------------+-------------------+-------------+-----------------+----------------+------------------+----------------------+
+1 row in set (0.01 sec)
+
+
+
+
+-- here we can see after giving less discount we get more than 5k difference in loss 
+--(we are losing less money) and here we can save more 
+
+-- I will try for more sub categories as well where pofit is less than 0
 
 
