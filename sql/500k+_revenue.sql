@@ -452,5 +452,72 @@ ORDER BY difference_in_profit DESC;
 
 
 
+----- now lets filter and sum all the original profit, new profit after decreasing the discoiunt, the total difference in profit from the 
+-- original profit with the original discount applied and last but not the least is percent of loss we recovered after 
+-- decreasing the discount 
 
+
+SELECT 
+    SUM(original_profit) AS total_original_profit,
+    SUM(total_new_profit) AS total_new_profit,
+    SUM(difference_in_profit) AS total_difference_in_profit,
+    ROUND((SUM(difference_in_profit) / ABS(SUM(original_profit))) * 100, 2) AS total_percent_of_loss_decreased
+FROM (
+    WITH Adjusted_Discounts AS (
+        SELECT 
+            Sub_Category,
+            Discount AS original_discount,
+            CASE 
+                WHEN Discount = 0.80 THEN 0.30
+                WHEN Discount = 0.70 THEN 0.27
+                WHEN Discount = 0.60 THEN 0.25
+                WHEN Discount = 0.50 THEN 0.22
+                WHEN Discount = 0.40 THEN 0.18
+                WHEN Discount = 0.30 THEN 0.12
+                WHEN Discount = 0.20 THEN 0.07
+                ELSE Discount  
+            END AS new_discount,
+            Sales,
+            Profit,
+            (Sales * (1 - Discount)) AS implied_revenue_before_cost,
+            (Sales * (1 - 
+                CASE 
+                WHEN Discount = 0.80 THEN 0.30
+                WHEN Discount = 0.70 THEN 0.27
+                WHEN Discount = 0.60 THEN 0.25
+                WHEN Discount = 0.50 THEN 0.22
+                WHEN Discount = 0.40 THEN 0.18
+                WHEN Discount = 0.30 THEN 0.12
+                WHEN Discount = 0.20 THEN 0.07
+                ELSE Discount
+                END)) - ((Sales * (1 - Discount)) - Profit) AS new_profit
+        FROM sales_performance_dashboard
+        WHERE is_loss = 1 
+    )
+    SELECT 
+        Sub_Category,
+        original_discount,
+        new_discount,
+        COUNT(*) AS transaction_count,
+        ROUND(SUM(Sales), 2) AS total_sales,
+        ROUND(SUM(Profit), 2) AS original_profit,
+        ROUND(AVG(new_profit), 2) AS new_avg_profit,
+        ROUND(SUM(new_profit), 2) AS total_new_profit,
+        ROUND(SUM(new_profit) - SUM(Profit), 2) AS difference_in_profit
+    FROM Adjusted_Discounts
+    GROUP BY Sub_Category, original_discount, new_discount
+    ORDER BY difference_in_profit DESC
+) AS subquery;
+
+
++-----------------------+------------------+----------------------------+---------------------------------+
+| total_original_profit | total_new_profit | total_difference_in_profit | total_percent_of_loss_decreased |
++-----------------------+------------------+----------------------------+---------------------------------+
+|            -156113.56 |        -56848.72 |                   99264.85 |                           63.59 |
++-----------------------+------------------+----------------------------+---------------------------------+
+1 row in set (0.07 sec)
+
+
+
+-- as we can see here we were able to recover around 63.59% of loss incurred by giiving less discounts to the customers.
 
