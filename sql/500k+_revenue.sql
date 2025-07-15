@@ -359,3 +359,98 @@ GROUP BY Sub_Category, original_discount, new_discount;
 -- I will try for more sub categories as well where pofit is less than 0
 
 
+
+
+
+---earlier I tried for one category and checked if after decreasing discount given we can recover the loss
+-- incurrend in this sub category and as we saw earlier we recovered some loss
+
+-- so now lets try decreasing the discount for all the sub catefgories and check if we can recover the loss we incurred earlier 
+
+WITH Adjusted_Discounts AS (
+    SELECT 
+        Sub_Category,
+        Discount AS original_discount,
+        CASE 
+           WHEN Discount = 0.80 THEN 0.30
+                WHEN Discount = 0.70 THEN 0.27
+                WHEN Discount = 0.60 THEN 0.25
+                WHEN Discount = 0.50 THEN 0.22
+                WHEN Discount = 0.40 THEN 0.18
+                WHEN Discount = 0.30 THEN 0.12
+                WHEN Discount = 0.20 THEN 0.07
+                ELSE Discount -- Keep original discount if no specific rule applies
+        END AS new_discount,
+        Sales,
+        Profit,
+        (Sales * (1 - Discount)) AS implied_revenue_before_cost,
+        (Sales * (1 - 
+            CASE 
+                WHEN Discount = 0.80 THEN 0.30
+                WHEN Discount = 0.70 THEN 0.27
+                WHEN Discount = 0.60 THEN 0.25
+                WHEN Discount = 0.50 THEN 0.22
+                WHEN Discount = 0.40 THEN 0.18
+                WHEN Discount = 0.30 THEN 0.12
+                WHEN Discount = 0.20 THEN 0.07
+                ELSE Discount
+            END)) - ((Sales * (1 - Discount)) - Profit) AS new_profit
+    FROM sales_performance_dashboard
+    WHERE is_loss = 1 
+)
+SELECT 
+    Sub_Category,
+    original_discount,
+    new_discount,
+    COUNT(*) AS transaction_count,
+    ROUND(SUM(Sales), 2) AS total_sales,
+    ROUND(SUM(Profit), 2) AS original_profit,
+    ROUND(SUM(new_profit), 2) AS total_new_profit,
+    ROUND(SUM(new_profit) - SUM(Profit), 2) AS difference_in_profit
+FROM Adjusted_Discounts
+GROUP BY Sub_Category, original_discount, new_discount
+ORDER BY difference_in_profit DESC;
+
+
+
++--------------+-------------------+--------------+-------------------+-------------+-----------------+------------------+----------------------+
+| Sub_Category | original_discount | new_discount | transaction_count | total_sales | original_profit | total_new_profit | difference_in_profit |
++--------------+-------------------+--------------+-------------------+-------------+-----------------+------------------+----------------------+
+| Chairs       |              0.30 |         0.12 |               147 |    63167.54 |        -6725.13 |          4645.03 |             11370.16 |
+| Machines     |              0.50 |         0.22 |                12 |    37935.09 |        -7635.24 |          2986.59 |             10621.83 |
+| Tables       |              0.40 |         0.18 |                75 |    45614.40 |       -16187.40 |         -6152.23 |             10035.17 |
+| Binders      |              0.70 |         0.27 |               380 |    22559.50 |       -16601.18 |         -6900.60 |              9700.59 |
+| Phones       |              0.40 |         0.18 |                97 |    31979.19 |        -6715.83 |           319.59 |              7035.42 |
+| Binders      |              0.80 |         0.30 |               232 |    13577.64 |       -21903.22 |        -15114.40 |              6788.82 |
+| Machines     |              0.70 |         0.27 |                23 |    15601.53 |       -19579.35 |        -12870.69 |              6708.66 |
+| Storage      |              0.20 |         0.07 |               161 |    37869.05 |        -6426.31 |         -1503.33 |              4922.98 |
+| Tables       |              0.30 |         0.12 |                50 |    23444.70 |        -3465.22 |           754.83 |              4220.05 |
+| Machines     |              0.40 |         0.18 |                 8 |    17556.77 |        -2884.66 |           977.83 |              3862.49 |
+| Tables       |              0.50 |         0.22 |                36 |    13675.09 |        -8615.44 |         -4786.41 |              3829.03 |
+| Chairs       |              0.20 |         0.07 |                83 |    27033.24 |        -3114.48 |           399.84 |              3514.32 |
+| Furnishings  |              0.60 |         0.25 |               138 |     6644.68 |        -5944.64 |         -3619.00 |              2325.64 |
+| Tables       |              0.20 |         0.07 |                31 |    16759.51 |        -1651.06 |           527.68 |              2178.74 |
+| Bookcases    |              0.50 |         0.22 |                18 |     7308.47 |        -4255.83 |         -2209.46 |              2046.37 |
+| Supplies     |              0.20 |         0.07 |                33 |    14067.18 |        -3015.62 |         -1186.89 |              1828.73 |
+| Bookcases    |              0.20 |         0.07 |                23 |    13846.34 |         -725.77 |          1074.25 |              1800.02 |
+| Appliances   |              0.80 |         0.30 |                67 |     3382.48 |        -8629.67 |         -6938.43 |              1691.24 |
+| Accessories  |              0.20 |         0.07 |                91 |    10958.84 |         -930.65 |           494.00 |              1424.65 |
+| Bookcases    |              0.70 |         0.27 |                15 |     2459.37 |        -3894.93 |         -2837.40 |              1057.53 |
+| Furnishings  |              0.20 |         0.07 |                29 |     6201.13 |         -546.26 |           259.89 |               806.15 |
+| Bookcases    |              0.30 |         0.12 |                 9 |     4083.95 |         -555.87 |           179.24 |               735.11 |
+| Phones       |              0.20 |         0.07 |                39 |     3818.66 |         -814.84 |          -318.41 |               496.43 |
+| Machines     |              0.30 |         0.12 |                 1 |     1362.90 |          -19.47 |           225.85 |               245.32 |
+| Fasteners    |              0.20 |         0.07 |                12 |      149.26 |          -33.19 |           -13.79 |                19.40 |
+| Bookcases    |              0.15 |         0.15 |                17 |     5881.17 |         -328.74 |          -328.74 |                 0.00 |
+| Bookcases    |              0.32 |         0.32 |                27 |    14493.45 |        -2391.16 |         -2391.16 |                 0.00 |
+| Chairs       |              0.10 |         0.10 |                 4 |     1506.34 |          -29.28 |           -29.28 |                 0.00 |
+| Tables       |              0.45 |         0.45 |                11 |     5484.98 |        -2493.12 |         -2493.12 |                 0.00 |
++--------------+-------------------+--------------+-------------------+-------------+-----------------+------------------+----------------------+
+29 rows in set (0.15 sec)
+
+
+
+
+
+
+
