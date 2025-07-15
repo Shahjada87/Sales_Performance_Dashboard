@@ -9,6 +9,7 @@ A comprehensive dashboard was built using Power BI to visualize key performance 
 The primary goal was to create an interactive dashboard that highlights sales, profit, and quantity metrics across various dimensions such as regions, categories, segments, and cities. 
 The project demonstrates proficiency in SQL for data manipulation, Python (Pandas) for data export, and Power BI for data visualization.
 
+<img width="1285" alt="Screenshot 2025-07-01 at 4 04 44 PM" src="https://github.com/user-attachments/assets/f20ef273-e198-4e73-bd50-c4535a97aecd" />
 
 <h3>Methodology</h3>
 
